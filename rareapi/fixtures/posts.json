@@ -16,7 +16,7 @@
     "model": "rareapi.post",
     "pk": 2,
     "fields": {
-      "rare_user": 2,
+      "rare_user": 1,
       "category": 2,
       "title": "Howdy",
       "publication_date": "2023-01-01",
