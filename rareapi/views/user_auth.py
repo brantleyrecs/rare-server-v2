@@ -29,8 +29,8 @@ def check_user(request):
             'profile_image_url': user.profile_image_url,
             'email': user.email,
             'created_on': user.created_on,
-            'active': user.active,
-            'is_staff': user.is_staff,
+            # 'active': user.active,
+            # 'is_staff': user.is_staff,
             'uid': user.uid
         }
         return Response(data)
@@ -55,8 +55,8 @@ def register_user(request):
         profile_image_url=request.data["profileImageUrl"],
         email=request.data["email"],
         created_on=request.data["createdOn"],
-        active=request.data["active"],
-        is_staff=request.data["isStaff"],
+        # active=request.data["active"],
+        # is_staff=request.data["isStaff"],
         uid=request.data["uid"]
     )
 
@@ -69,8 +69,8 @@ def register_user(request):
         'profile_image_url': user.profile_image_url,
         'email': user.email,
         'created_on': user.created_on,
-        'active': user.active,
-        'is_staff': user.is_staff,
+        # 'active': user.active,
+        # 'is_staff': user.is_staff,
         'uid': user.uid
     }
     return Response(data)
@@ -90,5 +90,5 @@ class UserSerializer(serializers.ModelSerializer):
     
   class Meta:
     model = User
-    fields = ('id', 'first_name', 'last_name', 'bio', 'profile_image_url', 'email', 'created_on', 'active', 'is_staff', 'uid')
+    fields = ('id', 'first_name', 'last_name', 'bio', 'profile_image_url', 'email', 'created_on', 'uid')
     depth = 1
