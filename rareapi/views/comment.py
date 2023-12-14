@@ -28,13 +28,13 @@ class CommentView(ViewSet):
   
   def create(self, request):
     user = User.objects.get(uid=request.data["userId"])
-    post = Post.objects.get(pk=request.data["post"])
+    # post = Post.objects.get(pk=request.data["post"])
     
     comment = Comment.objects.create(
       content=request.data["content"],
       created_on=request.data["createdOn"],
       author=user,
-      post=post,
+      # post=post,
     )
     serializer = CommentSerializer(comment)
     return Response(serializer.data)
@@ -44,8 +44,8 @@ class CommentView(ViewSet):
     comment.content = request.data["content"]
     comment.created_on = request.data["createdOn"]
     
-    post = Post.objects.get(pk=request.data["post"])
-    comment.post = post
+    # post = Post.objects.get(pk=request.data["post"])
+    # comment.post = post
     
     user = User.objects.get(uid=request.data["userId"])
     comment.user = user
