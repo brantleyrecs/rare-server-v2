@@ -16,11 +16,11 @@ class PostView(ViewSet):
     return Response(serializer.data)
   
   def create(self, request):
-    rare_user = User.objects.get(pk=request.data["uid"]) 
+    user_id = User.objects.get(pk=request.data["user_id"]) 
     category = Category.objects.get(pk=request.data["categoryId"])
     
     post = Post.objects.create(
-      rare_user=rare_user,
+      rare_user=user_id,
       category=category,
       title=request.data["title"],
       publication_date=request.data["publicationDate"],
