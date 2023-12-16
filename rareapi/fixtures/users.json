@@ -9,8 +9,6 @@
       "profile_image_url": "test",
       "email": "test@email.com",
       "created_on": "1212-12-12",
-      "active": 1,
-      "is_staff": false,
       "uid": "sa2k"
     }
   }

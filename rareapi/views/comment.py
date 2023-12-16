@@ -4,6 +4,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
 from rareapi.models import Comment, User
+from rareapi.serializers import CommentSerializer
 
 class CommentView(ViewSet):
   
@@ -19,10 +20,7 @@ class CommentView(ViewSet):
   def list(self, request):
     
     comments = Comment.objects.all()
-    uid = request.META['HTTP_AUTHORIZATION']
-    user = User.objects.get(uid=uid)
     
-
     serializer = CommentSerializer(comments, many=True)
     return Response(serializer.data)
   
@@ -40,16 +38,9 @@ class CommentView(ViewSet):
     return Response(serializer.data)
   
   def update(self, request, pk):
+    """Handle PUT requests for a comment in post"""
     comment = Comment.objects.get(pk=pk)
     comment.content = request.data["content"]
-    comment.created_on = request.data["createdOn"]
-    
-    # post = Post.objects.get(pk=request.data["post"])
-    # comment.post = post
-    
-    user = User.objects.get(uid=request.data["userId"])
-    comment.user = user
-    
     comment.save()
     
     return Response(None, status=status.HTTP_204_NO_CONTENT)
@@ -58,10 +49,3 @@ class CommentView(ViewSet):
     comment = Comment.objects.get(pk=pk)
     comment.delete()
     return Response(None, status=status.HTTP_204_NO_CONTENT)
-
-class CommentSerializer(serializers.ModelSerializer):
-    
-  class Meta:
-    model = Comment
-    fields = ('id', 'author', 'post', 'content', 'created_on')
-    depth = 1

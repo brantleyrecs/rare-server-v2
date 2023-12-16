@@ -1,9 +1,7 @@
 from rest_framework.decorators import api_view
 from django.http import HttpResponseServerError
 from rest_framework.decorators import action
-from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
-from rest_framework import serializers, status
 from rareapi.models import User
 
 @api_view(['POST'])
@@ -29,8 +27,6 @@ def check_user(request):
             'profile_image_url': user.profile_image_url,
             'email': user.email,
             'created_on': user.created_on,
-            # 'active': user.active,
-            # 'is_staff': user.is_staff,
             'uid': user.uid
         }
         return Response(data)
@@ -55,8 +51,6 @@ def register_user(request):
         profile_image_url=request.data["profileImageUrl"],
         email=request.data["email"],
         created_on=request.data["createdOn"],
-        # active=request.data["active"],
-        # is_staff=request.data["isStaff"],
         uid=request.data["uid"]
     )
 
@@ -69,26 +63,6 @@ def register_user(request):
         'profile_image_url': user.profile_image_url,
         'email': user.email,
         'created_on': user.created_on,
-        # 'active': user.active,
-        # 'is_staff': user.is_staff,
         'uid': user.uid
     }
     return Response(data)
-  
-class UserView(ViewSet):
-  
-  def retrieve(self, request, pk):
-    
-    try:
-        user = User.objects.get(pk=pk)
-        serializer = UserSerializer(user)
-        return Response(serializer.data)
-    except User.DoesNotExist as ex:
-        return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
-
-class UserSerializer(serializers.ModelSerializer):
-    
-  class Meta:
-    model = User
-    fields = ('id', 'first_name', 'last_name', 'bio', 'profile_image_url', 'email', 'created_on', 'uid')
-    depth = 1
