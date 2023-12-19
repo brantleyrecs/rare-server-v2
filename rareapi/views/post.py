@@ -65,8 +65,7 @@ class PostView(ViewSet):
     user_comment = Comment.objects.create(
       user=author_id,
       post=post_id,
-      content=request.data["content"],
-      created_on=request.data["createdOn"]
+      content=request.data["content"]
     )
     return Response({'message': 'Comment posted!'}, status=status.HTTP_201_CREATED)
   
