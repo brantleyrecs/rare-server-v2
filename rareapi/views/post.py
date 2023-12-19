@@ -5,15 +5,16 @@ from rest_framework import serializers, status
 from rareapi.models import Post, User, Category, Comment
 from rareapi.serializers import CommentSerializer
 from rest_framework.decorators import action
+from django.db.models import Count
 
 class PostView(ViewSet):
   def retrieve(self, request, pk):
-    post = Post.objects.get(pk=pk)
+    post = Post.objects.annotate(comment_count=Count('comments')).get(pk=pk)
     serializer = PostSerializer(post)
     return Response(serializer.data)
     
   def list(self, request):
-    posts = Post.objects.all()
+    posts = Post.objects.annotate(comment_count=Count('comments')).all()
     serializer = PostSerializer(posts, many=True)
     return Response(serializer.data)
   
@@ -78,7 +79,8 @@ class PostView(ViewSet):
     return Response(serializer.data)
     
 class PostSerializer(serializers.ModelSerializer):
+  comment_count = serializers.IntegerField(default=None)
   class Meta:
     model=Post
-    fields = ('id', 'rare_user', 'category', 'title', 'publication_date', 'image_url', 'content')
+    fields = ('id', 'rare_user', 'category', 'title', 'publication_date', 'image_url', 'content', 'comment_count')
     depth = 1
