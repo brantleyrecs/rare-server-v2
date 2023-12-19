@@ -19,18 +19,19 @@ class PostView(ViewSet):
     return Response(serializer.data)
   
   def create(self, request):
-    uid = User.objects.get(pk=request.data["uid"]) 
+    rare_user = User.objects.get(pk=request.data["rareUser"])
     category = Category.objects.get(pk=request.data["categoryId"])
     
     post = Post.objects.create(
-      rare_user=uid,
+      rare_user=rare_user,
       category=category,
       title=request.data["title"],
       publication_date=request.data["publicationDate"],
       image_url=request.data["imageUrl"],
-      content=request.data["content"],
-      approved=request.data["approved"]
+      content=request.data["content"]
     )
+    
+    post.save()
     serializer = PostSerializer(post)
     return Response(serializer.data)
   
@@ -40,9 +41,8 @@ class PostView(ViewSet):
     post.publication_date=request.data["publicationDate"]
     post.image_url=request.data["imageUrl"]
     post.content=request.data["content"]
-    post.approved=request.data["approved"]
     
-    rare_user=User.objects.get(pk=request.data["uid"]) 
+    rare_user=User.objects.get(pk=request.data["rareUser"])
     post.rare_user=rare_user
     
     category=Category.objects.get(pk=request.data["categoryId"])
@@ -82,5 +82,5 @@ class PostSerializer(serializers.ModelSerializer):
   comment_count = serializers.IntegerField(default=None)
   class Meta:
     model=Post
-    fields = ('id', 'rare_user', 'category', 'title', 'publication_date', 'image_url', 'content', 'approved', 'comment_count')
+    fields = ('id', 'rare_user', 'category', 'title', 'publication_date', 'image_url', 'content', 'comment_count')
     depth = 1
