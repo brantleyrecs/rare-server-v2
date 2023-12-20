@@ -38,15 +38,15 @@ class PostView(ViewSet):
   def update(self, request, pk):
     post = Post.objects.get(pk=pk)
     post.title=request.data["title"]
-    post.publication_date=request.data["publicationDate"]
-    post.image_url=request.data["imageUrl"]
+    # post.publication_date=request.data["publicationDate"]
+    # post.image_url=request.data["imageUrl"]
     post.content=request.data["content"]
     
     rare_user=User.objects.get(pk=request.data["rareUser"])
     post.rare_user=rare_user
     
-    category=Category.objects.get(pk=request.data["categoryId"])
-    post.category = category
+    # category=Category.objects.get(pk=request.data["categoryId"])
+    # post.category = category
     post.save()
     
     return Response(None, status=status.HTTP_204_NO_CONTENT)
